@@ -1,0 +1,76 @@
+{
+  "players": [
+    {
+      "id": 1,
+      "name": "DeepSeek",
+      "avatar": "https://picsum.photos/id/1/100/100",
+      "role": "平民"
+    },
+    {
+      "id": 2,
+      "name": "豆包",
+      "avatar": "https://picsum.photos/id/2/100/100",
+      "role": "狼王"
+    },
+    {
+      "id": 3,
+      "name": "文心一言",
+      "avatar": "https://picsum.photos/id/3/100/100",
+      "role": "平民"
+    },
+    {
+      "id": 4,
+      "name": "通义千问",
+      "avatar": "https://picsum.photos/id/4/100/100",
+      "role": "狼人"
+    },
+    {
+      "id": 5,
+      "name": "Grok",
+      "avatar": "https://picsum.photos/id/5/100/100",
+      "role": "骑士"
+    },
+    {
+      "id": 6,
+      "name": "LeChat",
+      "avatar": "https://picsum.photos/id/6/100/100",
+      "role": "守卫"
+    },
+    {
+      "id": 7,
+      "name": "腾讯混元",
+      "avatar": "https://picsum.photos/id/7/100/100",
+      "role": "预言家"
+    },
+    {
+      "id": 8,
+      "name": "智谱清言",
+      "avatar": "https://picsum.photos/id/8/100/100",
+      "role": "狼人"
+    },
+    {
+      "id": 9,
+      "name": "MiniMax",
+      "avatar": "https://picsum.photos/id/9/100/100",
+      "role": "猎人"
+    },
+    {
+      "id": 10,
+      "name": "Kimi",
+      "avatar": "https://picsum.photos/id/10/100/100",
+      "role": "平民"
+    },
+    {
+      "id": 11,
+      "name": "ChatGPT",
+      "avatar": "https://picsum.photos/id/11/100/100",
+      "role": "女巫"
+    },
+    {
+      "id": 12,
+      "name": "小米MiMo",
+      "avatar": "https://picsum.photos/id/12/100/100",
+      "role": "狼人"
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+/* ========================================
+   主题样式 - 四种风格的定义
+   ======================================== */
+
+/* 简约现代风格 */
+.style-minimal .player-card {
+    background: rgba(30, 41, 59, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.style-minimal .card-glow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.style-minimal .night-card-glow {
+    box-shadow: 0 4px 25px rgba(249, 115, 22, 0.2);
+}
+
+.style-minimal .night-overlay {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.88));
+}
+
+.style-minimal .day-overlay {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(20, 184, 166, 0.08));
+}
+
+.style-minimal .avatar-container {
+    border-radius: 8px;
+    background: white;
+}
+
+/* 游戏卡牌风格 */
+.style-game .player-card {
+    background: linear-gradient(145deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.85));
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    position: relative;
+    overflow: visible;
+}
+
+.style-game .player-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(14, 165, 233, 0.3));
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.style-game .player-card:hover::before {
+    opacity: 1;
+}
+
+.style-game .card-glow {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.style-game .night-card-glow {
+    box-shadow: 0 8px 35px rgba(249, 115, 22, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.style-game .night-overlay {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(51, 65, 85, 0.9));
+}
+
+.style-game .day-overlay {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(20, 184, 166, 0.1));
+}
+
+.style-game .avatar-container {
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #e2e8f0);
+    padding: 3px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.style-game .avatar-container img {
+    border-radius: 50%;
+}
+
+/* 科技未来风格 */
+.style-tech .player-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.8));
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    border-radius: 8px;
+    position: relative;
+}
+
+.style-tech .player-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+}
+
+.style-tech .card-glow {
+    box-shadow: 0 0 30px rgba(14, 165, 233, 0.3), 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.style-tech .night-card-glow {
+    box-shadow: 0 0 35px rgba(249, 115, 22, 0.4), 0 4px 25px rgba(0, 0, 0, 0.5);
+}
+
+.style-tech .night-overlay {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+}
+
+.style-tech .day-overlay {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(6, 182, 212, 0.15));
+}
+
+.style-tech .avatar-container {
+    border-radius: 4px;
+    background: rgba(14, 165, 233, 0.2);
+    border: 1px solid rgba(14, 165, 233, 0.4);
+}
+
+/* 中国风古典风格 */
+.style-classic .player-card {
+    background: linear-gradient(145deg, rgba(127, 29, 29, 0.75), rgba(30, 41, 59, 0.7));
+    border: 2px solid rgba(251, 146, 60, 0.4);
+    border-radius: 8px;
+    position: relative;
+}
+
+.style-classic .player-card::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 1px solid rgba(251, 146, 60, 0.2);
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+.style-classic .card-glow {
+    box-shadow: 0 6px 25px rgba(127, 29, 29, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.style-classic .night-card-glow {
+    box-shadow: 0 6px 30px rgba(251, 146, 60, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.style-classic .night-overlay {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.93), rgba(127, 29, 29, 0.4));
+}
+
+.style-classic .day-overlay {
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.15), rgba(20, 184, 166, 0.08));
+}
+
+.style-classic .avatar-container {
+    border-radius: 8px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 2px solid rgba(251, 146, 60, 0.5);
+}

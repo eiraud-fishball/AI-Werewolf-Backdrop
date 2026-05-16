@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI狼人杀 - 背景板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/themes.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wolf: {
+                            night: '#0f172a',
+                            day: '#0ea5e9',
+                            accent: '#f97316',
+                            card: 'rgba(30, 41, 59, 0.85)',
+                            cardNight: 'rgba(15, 23, 42, 0.9)'
+                        }
+                    },
+                    fontFamily: {
+                        game: ['"Noto Sans SC"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-game style-minimal" id="gameBoard">
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000" id="bgLayer">
+        <div class="absolute inset-0 day-overlay transition-all duration-1000" id="overlayLayer"></div>
+    </div>
+
+    <div class="absolute top-0 left-0 right-0 z-20 p-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="player-card rounded-lg px-4 py-2 text-white flex items-center gap-2 card-glow">
+                <i class="fa fa-moon-o" id="modeIcon"></i>
+                <span id="modeText" class="font-bold">白昼阶段</span>
+            </div>
+            
+            <div class="player-card rounded-lg px-4 py-2 text-white text-xl font-bold card-glow">
+                AI 狼人杀 对局中
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-2">
+            <button id="toggleModeBtn" class="bg-wolf-accent hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-300 card-glow">
+                切换昼夜
+            </button>
+            
+            <div class="player-card rounded-lg px-2 py-2 card-glow flex items-center gap-1">
+                <button class="theme-btn px-3 py-1 rounded text-white text-sm hover:bg-white/20 transition-all" data-style="minimal">简约</button>
+                <button class="theme-btn px-3 py-1 rounded text-white text-sm hover:bg-white/20 transition-all" data-style="game">卡牌</button>
+                <button class="theme-btn px-3 py-1 rounded text-white text-sm hover:bg-white/20 transition-all" data-style="tech">科技</button>
+                <button class="theme-btn px-3 py-1 rounded text-white text-sm hover:bg-white/20 transition-all" data-style="classic">古典</button>
+            </div>
+            
+            <button class="player-card rounded-lg px-4 py-2 text-white hover:bg-white/20 transition-all card-glow" title="设置">
+                <i class="fa fa-cog"></i>
+            </button>
+            
+            <button class="player-card rounded-lg px-4 py-2 text-white hover:bg-white/20 transition-all card-glow" title="全屏">
+                <i class="fa fa-expand" id="fullscreenBtn"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="absolute inset-0 z-10 flex justify-between items-center px-10 md:px-20 pt-20 pb-24">
+        <div class="flex flex-col gap-5 w-72" id="leftPlayersContainer">
+        </div>
+
+        <div class="text-center text-white hidden lg:block" id="gameInfoContainer">
+            <h2 class="text-3xl font-bold game-info-title" id="gameInfoTitle"></h2>
+            <p class="mt-3 text-lg opacity-80 game-info-description" id="gameInfoDescription"></p>
+        </div>
+
+        <div class="flex flex-col gap-5 w-72" id="rightPlayersContainer">
+        </div>
+    </div>
+
+    <script src="assets/js/player-renderer.js"></script>
+    <script src="assets/js/theme-switcher.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

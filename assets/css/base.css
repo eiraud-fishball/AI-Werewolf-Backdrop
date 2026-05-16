@@ -1,0 +1,24 @@
+/* ========================================
+   基础样式 - 重置、字体、通用样式
+   ======================================== */
+
+/* CSS重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 根元素样式 */
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* 过渡动画 */
+.transition-all {
+    transition: all 0.3s ease;
+}
