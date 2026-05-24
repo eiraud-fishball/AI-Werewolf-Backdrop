@@ -138,10 +138,7 @@ const GameApp = {
 
         const saveGameConfigBtn = document.getElementById('saveGameConfigBtn');
         if (saveGameConfigBtn) {
-            saveGameConfigBtn.addEventListener('click', () => {
-                this.saveConfig();
-                this.closeConfigModal();
-            });
+            saveGameConfigBtn.addEventListener('click', () => this.saveConfig());
         }
 
         configTabs.forEach(tab => {
@@ -284,13 +281,8 @@ const GameApp = {
 
         ConfigManager.updateConfig(newConfig);
         this.setBackground(newConfig.background);
-        
-        const gameTitle = document.getElementById('gameTitle');
-        if (gameTitle) {
-            gameTitle.textContent = newConfig.gameInfo.title;
-        }
-        
         PlayerRenderer.refresh();
+        this.updateStatsDisplay();
         this.closeConfigModal();
     },
 
@@ -301,11 +293,27 @@ const GameApp = {
         const saveAndRefreshBtn = document.getElementById('saveAndRefreshBtn');
         if (saveAndRefreshBtn) {
             saveAndRefreshBtn.addEventListener('click', () => {
-                ConfigManager.saveToStorage();
+                this.saveAllPlayerInputs();
                 PlayerRenderer.refresh();
                 this.updateStatsDisplay();
             });
         }
+    },
+
+    saveAllPlayerInputs() {
+        const playersList = document.getElementById('playersList');
+        const inputs = playersList.querySelectorAll('input[data-field][data-index]');
+        const config = ConfigManager.getConfig();
+        
+        inputs.forEach(input => {
+            const index = parseInt(input.dataset.index);
+            const field = input.dataset.field;
+            if (config.players[index]) {
+                config.players[index][field] = input.value;
+            }
+        });
+        
+        ConfigManager.updatePlayers(config.players);
     },
 
     renderPlayersList() {
