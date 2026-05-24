@@ -109,27 +109,32 @@ const EffectsManager = {
         const createSnowflake = () => {
             if (!this.activeEffects.has('snow')) return;
             
-            const size = Math.random() * 20 + 15;
-            const duration = Math.random() * 6 + 6;
+            const size = Math.random() * 12 + 6;
+            const duration = Math.random() * 8 + 6;
             const startX = Math.random() * 100;
+            const opacity = Math.random() * 0.5 + 0.3;
+            const blur = Math.random() * 1;
             
             this.createElement({
                 effect: 'snow',
                 cssText: `
                     position: absolute;
-                    font-size: ${size}px;
+                    width: ${size}px;
+                    height: ${size}px;
                     left: ${startX}%;
                     top: -${size}px;
-                    opacity: ${Math.random() * 0.4 + 0.6};
+                    opacity: ${opacity};
                     animation: snowfall ${duration}s linear forwards;
-                    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-                    filter: drop-shadow(0 0 5px white);
+                    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 40%, rgba(200,220,255,0.3) 70%, transparent 100%);
+                    border-radius: 50%;
+                    filter: blur(${blur}px);
+                    box-shadow: 0 0 ${size * 0.5}px rgba(255,255,255,0.5);
                 `,
                 lifetime: duration * 1000
-            }, '❄️');
+            });
         };
         
-        this.effectIntervals.snow = setInterval(createSnowflake, 80);
+        this.effectIntervals.snow = setInterval(createSnowflake, 60);
     },
 
     startRain() {

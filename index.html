@@ -39,7 +39,7 @@
                 <span id="modeText" class="font-bold">白昼阶段</span>
             </div>
             
-            <div class="player-card rounded-lg px-4 py-2 text-white text-xl font-bold card-glow" id="gameTitle">
+            <div class="player-card rounded-lg px-4 py-2 text-white text-lg font-bold card-glow" id="gameTitle">
                 AI 狼人杀 对局中
             </div>
 
@@ -299,7 +299,29 @@
                                     <i class="fa fa-plus mr-1"></i>添加玩家
                                 </button>
                             </div>
-                            <div id="playersList" class="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
+                            <div id="playersList" class="space-y-2 max-h-[50vh] overflow-y-auto pr-2">
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-white/10">
+                                <button id="saveAndRefreshBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all font-medium">
+                                    <i class="fa fa-refresh mr-2"></i>保存并刷新界面
+                                </button>
+                            </div>
+                            
+                            <div class="mt-4 p-3 bg-slate-700/50 rounded-lg">
+                                <h4 class="text-white font-medium mb-2 text-sm">
+                                    <i class="fa fa-info-circle mr-1"></i>头像设置提示
+                                </h4>
+                                <p class="text-white/60 text-xs mb-2">可以使用以下方式获取头像图片：</p>
+                                <div class="bg-slate-800/50 rounded p-2 text-xs text-white/70 space-y-1">
+                                    <p>1. <strong>favicon.im API</strong> - 获取网站图标：</p>
+                                    <code class="block bg-slate-900/50 p-2 rounded mt-1 text-green-400 break-all">https://favicon.im/网站域名?larger=true</code>
+                                    <p class="mt-2">示例：</p>
+                                    <code class="block bg-slate-900/50 p-2 rounded text-blue-400">https://favicon.im/github.com?larger=true</code>
+                                    <code class="block bg-slate-900/50 p-2 rounded text-blue-400">https://favicon.im/google.com?larger=true</code>
+                                    <p class="mt-2">2. <strong>picsum.photos</strong> - 随机图片：</p>
+                                    <code class="block bg-slate-900/50 p-2 rounded text-blue-400">https://picsum.photos/id/1/100/100</code>
+                                </div>
                             </div>
                         </div>
                         

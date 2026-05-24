@@ -289,6 +289,15 @@ const GameApp = {
     initPlayerManagement() {
         const addPlayerBtn = document.getElementById('addPlayerBtn');
         addPlayerBtn.addEventListener('click', () => this.addPlayer());
+
+        const saveAndRefreshBtn = document.getElementById('saveAndRefreshBtn');
+        if (saveAndRefreshBtn) {
+            saveAndRefreshBtn.addEventListener('click', () => {
+                ConfigManager.saveToStorage();
+                PlayerRenderer.refresh();
+                this.updateStatsDisplay();
+            });
+        }
     },
 
     renderPlayersList() {
