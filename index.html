@@ -6,9 +6,9 @@
     <title>AI狼人杀 - 背景板</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/themes.css">
-    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="WebAssets/Styles/Base.css">
+    <link rel="stylesheet" href="WebAssets/Styles/Themes.css">
+    <link rel="stylesheet" href="WebAssets/Styles/Components.css">
     <script>
         tailwind.config = {
             theme: {
@@ -60,6 +60,10 @@
             
             <button id="settingsBtn" class="player-card rounded-lg px-4 py-2 text-white hover:bg-white/20 transition-all card-glow" title="设置">
                 <i class="fa fa-cog"></i>
+            </button>
+            
+            <button class="player-card rounded-lg px-4 py-2 text-white hover:bg-white/20 transition-all card-glow" id="timerToggleBtn" title="计时器">
+                <i class="fa fa-clock-o"></i>
             </button>
             
             <button class="player-card rounded-lg px-4 py-2 text-white hover:bg-white/20 transition-all card-glow" title="全屏">
@@ -424,6 +428,17 @@
                         </div>
                     </div>
 
+                    <div class="mb-4 border-t border-white/10 pt-4">
+                        <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                            <i class="fa fa-history"></i>游戏事件日志
+                            <button class="text-xs text-white/40 hover:text-white/80 ml-auto" onclick="GameLogService.clear(); StatsPanelController._renderGameLog()">
+                                <i class="fa fa-trash"></i> 清空
+                            </button>
+                        </h3>
+                        <div id="gameLogList" class="game-log-list max-h-48 overflow-y-auto space-y-0.5 bg-black/20 rounded-lg p-2">
+                        </div>
+                    </div>
+
                     <div class="flex gap-2">
                         <button id="resetGameBtn" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg transition-all">
                             <i class="fa fa-refresh mr-1"></i>重置本局
@@ -440,20 +455,97 @@
         <div class="flex flex-col gap-5 w-72" id="leftPlayersContainer">
         </div>
 
-        <div class="text-center text-white hidden lg:block px-4" id="gameInfoContainer">
-            <h2 class="text-4xl font-bold game-info-title" id="gameInfoTitle"></h2>
-            <p class="mt-4 text-xl game-info-description" id="gameInfoDescription"></p>
+        <div class="text-center text-white hidden lg:block px-6 flex-1 max-w-4xl" id="gameInfoContainer">
+            <!-- 默认游戏信息 -->
+            <div id="defaultGameInfo">
+                <h2 class="text-5xl font-bold game-info-title" id="gameInfoTitle"></h2>
+                <p class="mt-4 text-left game-info-description" id="gameInfoDescription"></p>
+            </div>
+
+            <!-- 发言板 -->
+            <div id="speechBoard" class="hidden speech-board">
+                <button onclick="SpeechService.hideSpeechBoard()" class="absolute top-3 right-3 text-white/40 hover:text-white/80 text-2xl leading-none z-10">&times;</button>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="speech-avatar w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 border-2 border-white/30">
+                        <img id="speechAvatar" src="" alt="" class="w-full h-full object-cover">
+                    </div>
+                    <span id="speechPlayerName" class="text-2xl font-bold text-white"></span>
+                </div>
+                <div id="speechContent" class="text-left speech-content text-white/90 text-xl leading-relaxed"></div>
+            </div>
+
+            <!-- 投票详情公告栏 -->
+            <div id="votingBoard" class="hidden voting-board">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-3xl font-bold text-white">
+                        <i class="fa fa-check-square-o mr-2"></i>投票详情
+                    </h3>
+                    <button onclick="SpeechService.clearVotes()"
+                            class="text-white/50 hover:text-red-400 transition-colors text-sm flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-white/5"
+                            title="关闭并清空投票">
+                        <i class="fa fa-trash-o"></i>
+                        <span>清空</span>
+                    </button>
+                </div>
+                <div id="votingDetails" class="space-y-2"></div>
+            </div>
+
+            <!-- 事件公告区 -->
+            <div id="eventAnnouncement" class="hidden event-announcement">
+                <div id="announceContent"></div>
+            </div>
+
+            <!-- 计时器 -->
+            <div id="timerDisplay" class="hidden timer-display">
+                <div class="timer-progress-bar">
+                    <div id="timerProgress" class="timer-progress-fill"></div>
+                </div>
+                <div id="timerTime" class="timer-time">00:00</div>
+                <div class="flex gap-3 mt-3 justify-center">
+                    <button class="timer-btn" onclick="GameTimerService.start(30, t => document.getElementById('timerTime').textContent=GameTimerService.formatTime(t), () => {document.getElementById('timerDisplay').classList.add('hidden')})" title="30秒">30s</button>
+                    <button class="timer-btn" onclick="GameTimerService.start(60, t => document.getElementById('timerTime').textContent=GameTimerService.formatTime(t), () => {document.getElementById('timerDisplay').classList.add('hidden')})" title="1分钟">1m</button>
+                    <button class="timer-btn" onclick="GameTimerService.start(120, t => document.getElementById('timerTime').textContent=GameTimerService.formatTime(t), () => {document.getElementById('timerDisplay').classList.add('hidden')})" title="2分钟">2m</button>
+                    <button class="timer-btn" onclick="GameTimerService.start(180, t => document.getElementById('timerTime').textContent=GameTimerService.formatTime(t), () => {document.getElementById('timerDisplay').classList.add('hidden')})" title="3分钟">3m</button>
+                    <button class="timer-btn timer-btn-stop" onclick="GameTimerService.stop(); document.getElementById('timerDisplay').classList.add('hidden')" title="停止">
+                        <i class="fa fa-stop"></i>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="flex flex-col gap-5 w-72" id="rightPlayersContainer">
         </div>
     </div>
 
-    <script src="assets/js/config-manager.js"></script>
-    <script src="assets/js/font-manager.js"></script>
-    <script src="assets/js/player-renderer.js"></script>
-    <script src="assets/js/theme-switcher.js"></script>
-    <script src="assets/js/effects-manager.js"></script>
-    <script src="assets/js/app.js"></script>
+    <!-- Infrastructure -->
+    <script src="WebAssets/Scripts/Infrastructure/Logger.js"></script>
+    <script src="WebAssets/Scripts/Infrastructure/EventBus.js"></script>
+    <script src="WebAssets/Scripts/Infrastructure/TextAutoScaler.js"></script>
+    <script src="WebAssets/Scripts/Infrastructure/AnimationHelper.js"></script>
+
+    <!-- DataStore -->
+    <script src="WebAssets/Scripts/DataStore/ConfigStore.js"></script>
+    <script src="WebAssets/Scripts/DataStore/PlayerStore.js"></script>
+    <script src="WebAssets/Scripts/DataStore/GameLogStore.js"></script>
+
+    <!-- Services -->
+    <script src="WebAssets/Scripts/Services/FontService.js"></script>
+    <script src="WebAssets/Scripts/Services/BackgroundService.js"></script>
+    <script src="WebAssets/Scripts/Services/PlayerRenderService.js"></script>
+    <script src="WebAssets/Scripts/Services/SpeechService.js"></script>
+    <script src="WebAssets/Scripts/Services/ThemeService.js"></script>
+    <script src="WebAssets/Scripts/Services/EffectsService.js"></script>
+    <script src="WebAssets/Scripts/Services/GameLogService.js"></script>
+    <script src="WebAssets/Scripts/Services/GameTimerService.js"></script>
+    <script src="WebAssets/Scripts/Services/EventAnnounceService.js"></script>
+
+    <!-- Application Controllers -->
+    <script src="WebAssets/Scripts/Application/Controllers/DayNightController.js"></script>
+    <script src="WebAssets/Scripts/Application/Controllers/ConfigPanelController.js"></script>
+    <script src="WebAssets/Scripts/Application/Controllers/StatsPanelController.js"></script>
+    <script src="WebAssets/Scripts/Application/Controllers/KeyboardShortcutController.js"></script>
+
+    <!-- Application Entry -->
+    <script src="WebAssets/Scripts/Application/GameHost.js"></script>
 </body>
 </html>

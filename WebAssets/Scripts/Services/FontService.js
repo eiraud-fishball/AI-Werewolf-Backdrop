@@ -1,8 +1,9 @@
 /* ========================================
-   字体管理器 - 动态加载和管理字体
+   FontService - 字体管理服务
+   预设字体 / 动态加载 / 应用切换
    ======================================== */
 
-const FontManager = {
+const FontService = {
     presetFonts: [
         {
             name: '系统字体',
@@ -12,32 +13,32 @@ const FontManager = {
         {
             name: '思源黑体 (推荐)',
             family: 'Source Han Sans VF',
-            cdn: 'https://hanzi.itedev.com/fonts/Source+Han+Sans+VF/result.css'
+            cdn: 'https://hanzi.itedev.cn/fonts/Source+Han+Sans+VF/result.css'
         },
         {
             name: '思源宋体',
             family: 'Source Han Serif VF',
-            cdn: 'https://hanzi.itedev.com/fonts/Source+Han+Serif+VF/result.css'
+            cdn: 'https://hanzi.itedev.cn/fonts/Source+Han+Serif+VF/result.css'
         },
         {
             name: 'MiSans',
             family: 'MiSans',
-            cdn: 'https://hanzi.itedev.com/fonts/MiSans/result.css'
+            cdn: 'https://hanzi.itedev.cn/fonts/MiSans/result.css'
         },
         {
             name: 'JetBrains Maple Mono',
             family: 'JetBrains Maple Mono',
-            cdn: 'https://hanzi.itedev.com/fonts/JetBrains+Maple+Mono/result.css'
+            cdn: 'https://hanzi.itedev.cn/fonts/JetBrains+Maple+Mono/result.css'
         },
         {
             name: '霞鹜文楷',
             family: 'LXGW WenKai',
-            cdn: 'https://hanzi.itedev.com/fonts/LXGW+WenKai/result.css'
+            cdn: 'https://hanzi.itedev.cn/fonts/LXGW+WenKai/result.css'
         },
         {
             name: '霞鹜文楷Mono',
             family: 'LXGW WenKai Mono',
-            cdn: 'https://hanzi.itedev.com/fonts/LXGW+WenKai+Mono/result.css'
+            cdn: 'https://hanzi.itedev.cn/fonts/LXGW+WenKai+Mono/result.css'
         },
         {
             name: '更纱黑体',
@@ -85,7 +86,7 @@ const FontManager = {
     loadedFonts: new Set(),
 
     async init() {
-        const config = await ConfigManager.init();
+        const config = await ConfigStore.init();
         const fontConfig = config.font || this.presetFonts[0];
         await this.loadFont(fontConfig);
         return fontConfig;
@@ -114,21 +115,21 @@ const FontManager = {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = fontConfig.cdn;
-            
+
             link.onload = () => {
                 this.loadedFonts.add(fontConfig.family);
                 this.applyFont(fontConfig.family);
                 this.currentFont = fontConfig;
                 resolve();
             };
-            
+
             link.onerror = () => {
                 console.error(`加载字体失败: ${fontConfig.family}`);
                 this.applyFont(this.presetFonts[0].family);
                 this.currentFont = this.presetFonts[0];
                 resolve();
             };
-            
+
             document.head.appendChild(link);
         });
     },
@@ -146,7 +147,7 @@ const FontManager = {
     },
 
     setFont(fontConfig) {
-        ConfigManager.updateFont(fontConfig);
+        ConfigStore.updateFont(fontConfig);
         this.loadFont(fontConfig);
     },
 

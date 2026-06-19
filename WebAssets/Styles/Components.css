@@ -13,29 +13,31 @@
 
 /* 游戏信息文字样式 */
 .game-info-title {
+    font-size: 3.5rem;
+    line-height: 1.3;
     text-shadow: 
-        0 0 1px rgba(0, 0, 0, 0.3),
-        0 0 8px rgba(0, 0, 0, 0.9),
-        0 2px 4px rgba(0, 0, 0, 0.5);
+        0 0 2px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.95),
+        0 0 20px rgba(0, 0, 0, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.6);
     word-wrap: break-word;
     word-break: break-word;
     white-space: normal;
     max-width: 100%;
-    font-size: 2.5rem;
-    line-height: 1.3;
 }
 
 .game-info-description {
+    font-size: 1.15rem;
+    line-height: 1.6;
     text-shadow: 
-        0 0 1px rgba(0, 0, 0, 0.25),
-        0 0 6px rgba(0, 0, 0, 0.8),
-        0 1px 3px rgba(0, 0, 0, 0.4);
+        0 0 2px rgba(0, 0, 0, 0.85),
+        0 0 8px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(0, 0, 0, 0.7),
+        0 1px 3px rgba(0, 0, 0, 0.5);
     word-wrap: break-word;
     word-break: break-word;
     white-space: pre-wrap;
     max-width: 100%;
-    font-size: 1.25rem;
-    line-height: 1.6;
 }
 
 /* 配置面板样式 */
@@ -158,12 +160,6 @@
     transform: scale(1.05);
 }
 
-/* 投票按钮悬停效果 */
-.vote-btn:hover,
-.status-btn:hover {
-    transform: scale(1.1);
-}
-
 /* 统计栏样式 */
 #statsBar {
     animation: fadeIn 0.5s ease;
@@ -216,12 +212,6 @@ button:active {
     backdrop-filter: blur(4px);
 }
 
-/* 玩家卡片悬停效果 */
-.role-card:hover .vote-btn,
-.role-card:hover .status-btn {
-    opacity: 1;
-}
-
 /* 角色标签样式 */
 .role-label {
     display: inline-flex;
@@ -248,6 +238,103 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* 警长SVG星星徽章 */
+.sheriff-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    z-index: 20;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+    animation: sheriffGlow 2s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.sheriff-badge:hover {
+    transform: scale(1.15);
+}
+
+@keyframes sheriffGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.8));
+    }
+    50% {
+        filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1));
+    }
+}
+
+/* 死亡标记 × */
+.dead-mark {
+    font-size: 3rem;
+    color: #ef4444;
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.4);
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* 发言板样式 */
+.speech-board {
+    position: relative;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+    animation: fadeInUp 0.3s ease;
+    max-width: 100%;
+}
+
+.speech-content {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+    max-height: 65vh;
+    overflow-y: auto;
+    font-size: 1.35rem;
+    line-height: 1.8;
+}
+
+.speech-avatar {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+/* 投票公告栏样式 */
+.voting-board {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 28px;
+    animation: fadeInUp 0.3s ease;
+    max-width: 100%;
+}
+
+.vote-record {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+}
+
+.vote-record:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.vote-arrow {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.2rem;
+}
+
+/* 玩家卡片相对定位（用于放置警徽） */
+.role-card {
+    position: relative;
 }
 
 /* 阶段历史样式 */
@@ -513,4 +600,117 @@ button:active {
 
 .effect-toggle:hover {
     transform: scale(1.02);
+}
+
+/* ========================================
+   新增 UI 组件样式
+   ======================================== */
+
+/* 事件公告 */
+.event-announcement {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 40px 28px;
+    animation: fadeInUp 0.3s ease;
+}
+
+.announce-content {
+    text-align: center;
+}
+
+.announce-icon {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.announce-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    margin-bottom: 12px;
+}
+
+.announce-message {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.7;
+}
+
+/* 计时器 */
+.timer-display {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 24px 28px;
+    animation: fadeInUp 0.3s ease;
+}
+
+.timer-time {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    letter-spacing: 6px;
+}
+
+.timer-progress-bar {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.timer-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+    border-radius: 3px;
+    transition: width 1s linear;
+    width: 100%;
+}
+
+.timer-btn {
+    padding: 6px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.timer-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.timer-btn-stop {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.timer-btn-stop:hover {
+    background: rgba(239, 68, 68, 0.5);
+}
+
+/* 游戏日志列表 */
+.game-log-list {
+    scrollbar-width: thin;
+}
+
+.game-log-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.game-log-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
 }

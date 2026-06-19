@@ -1,8 +1,9 @@
 /* ========================================
-   视觉效果管理器 - 管理粒子效果和动画
+   EffectsService - 视觉效果服务
+   粒子系统 / 动态背景效果管理
    ======================================== */
 
-const EffectsManager = {
+const EffectsService = {
     container: null,
     activeEffects: new Set(),
     effectIntervals: {},
@@ -27,7 +28,7 @@ const EffectsManager = {
     },
 
     loadSettings() {
-        const config = ConfigManager.getConfig();
+        const config = ConfigStore.getConfig();
         const savedEffects = config?.visualEffects || [];
         savedEffects.forEach(effect => {
             if (this.effects[effect]) {
@@ -38,7 +39,7 @@ const EffectsManager = {
 
     saveSettings() {
         const effects = Array.from(this.activeEffects);
-        ConfigManager.updateConfig({ visualEffects: effects });
+        ConfigStore.updateConfig({ visualEffects: effects });
     },
 
     toggleEffect(effectName) {
@@ -52,11 +53,11 @@ const EffectsManager = {
 
     enableEffect(effectName) {
         if (this.activeEffects.has(effectName)) return;
-        
+
         this.activeEffects.add(effectName);
         this.effectElements[effectName] = [];
-        
-        switch(effectName) {
+
+        switch (effectName) {
             case 'snow': this.startSnow(); break;
             case 'rain': this.startRain(); break;
             case 'stars': this.startStars(); break;
@@ -72,15 +73,15 @@ const EffectsManager = {
 
     disableEffect(effectName) {
         if (!this.activeEffects.has(effectName)) return;
-        
+
         this.activeEffects.delete(effectName);
-        
+
         if (this.effectIntervals[effectName]) {
             clearInterval(this.effectIntervals[effectName]);
             clearTimeout(this.effectIntervals[effectName]);
             delete this.effectIntervals[effectName];
         }
-        
+
         if (this.effectElements[effectName]) {
             this.effectElements[effectName].forEach(el => el.remove());
             delete this.effectElements[effectName];
@@ -93,7 +94,7 @@ const EffectsManager = {
         el.textContent = content;
         this.container.appendChild(el);
         this.effectElements[options.effect].push(el);
-        
+
         if (options.lifetime && options.lifetime < 999999999) {
             setTimeout(() => {
                 el.remove();
@@ -101,20 +102,30 @@ const EffectsManager = {
                 if (idx > -1) this.effectElements[options.effect].splice(idx, 1);
             }, options.lifetime);
         }
-        
+
         return el;
     },
+
+    isEffectEnabled(effectName) {
+        return this.activeEffects.has(effectName);
+    },
+
+    getAllEffects() {
+        return this.effects;
+    },
+
+    // ---------- 各效果实现 ----------
 
     startSnow() {
         const createSnowflake = () => {
             if (!this.activeEffects.has('snow')) return;
-            
+
             const size = Math.random() * 12 + 6;
             const duration = Math.random() * 8 + 6;
             const startX = Math.random() * 100;
             const opacity = Math.random() * 0.5 + 0.3;
             const blur = Math.random() * 1;
-            
+
             this.createElement({
                 effect: 'snow',
                 cssText: `
@@ -133,19 +144,18 @@ const EffectsManager = {
                 lifetime: duration * 1000
             });
         };
-        
         this.effectIntervals.snow = setInterval(createSnowflake, 60);
     },
 
     startRain() {
         const createRaindrop = () => {
             if (!this.activeEffects.has('rain')) return;
-            
+
             const height = Math.random() * 30 + 25;
             const duration = Math.random() * 0.4 + 0.3;
             const startX = Math.random() * 100;
             const width = Math.random() * 2 + 1.5;
-            
+
             this.createElement({
                 effect: 'rain',
                 cssText: `
@@ -161,7 +171,6 @@ const EffectsManager = {
                 lifetime: duration * 1000
             });
         };
-        
         this.effectIntervals.rain = setInterval(createRaindrop, 30);
     },
 
@@ -169,13 +178,13 @@ const EffectsManager = {
         for (let i = 0; i < 120; i++) {
             setTimeout(() => {
                 if (!this.activeEffects.has('stars')) return;
-                
+
                 const size = Math.random() * 4 + 2;
                 const x = Math.random() * 100;
                 const y = Math.random() * 100;
                 const duration = Math.random() * 2 + 1.5;
                 const delay = Math.random() * 3;
-                
+
                 this.createElement({
                     effect: 'stars',
                     cssText: `
@@ -198,13 +207,13 @@ const EffectsManager = {
     startFireflies() {
         const createFirefly = () => {
             if (!this.activeEffects.has('fireflies')) return;
-            
+
             const size = Math.random() * 10 + 8;
             const startX = Math.random() * 100;
             const startY = Math.random() * 100;
             const duration = Math.random() * 10 + 8;
             const hue = Math.random() * 60 + 40;
-            
+
             this.createElement({
                 effect: 'fireflies',
                 cssText: `
@@ -222,7 +231,6 @@ const EffectsManager = {
                 lifetime: 999999999
             });
         };
-        
         for (let i = 0; i < 50; i++) {
             setTimeout(createFirefly, i * 150);
         }
@@ -230,16 +238,16 @@ const EffectsManager = {
 
     startPetals() {
         const colors = ['#ffb7c5', '#ffc0cb', '#ff69b4', '#ff1493', '#ff6b9d', '#ff85a2'];
-        
+
         const createPetal = () => {
             if (!this.activeEffects.has('petals')) return;
-            
+
             const size = Math.random() * 18 + 12;
             const duration = Math.random() * 5 + 6;
             const startX = Math.random() * 100;
             const color = colors[Math.floor(Math.random() * colors.length)];
             const rotation = Math.random() * 360;
-            
+
             this.createElement({
                 effect: 'petals',
                 cssText: `
@@ -258,19 +266,18 @@ const EffectsManager = {
                 lifetime: duration * 1000
             });
         };
-        
         this.effectIntervals.petals = setInterval(createPetal, 150);
     },
 
     startBubbles() {
         const createBubble = () => {
             if (!this.activeEffects.has('bubbles')) return;
-            
+
             const size = Math.random() * 50 + 20;
             const duration = Math.random() * 5 + 4;
             const startX = Math.random() * 100;
             const hue = Math.random() * 60 + 180;
-            
+
             this.createElement({
                 effect: 'bubbles',
                 cssText: `
@@ -288,23 +295,22 @@ const EffectsManager = {
                 lifetime: duration * 1000
             });
         };
-        
         this.effectIntervals.bubbles = setInterval(createBubble, 250);
     },
 
     startConfetti() {
         const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4', '#7fff00', '#ff4500'];
-        
+
         const createConfetti = () => {
             if (!this.activeEffects.has('confetti')) return;
-            
+
             const size = Math.random() * 15 + 8;
             const duration = Math.random() * 3 + 2.5;
             const startX = Math.random() * 100;
             const color = colors[Math.floor(Math.random() * colors.length)];
             const rotation = Math.random() * 720;
             const shape = Math.random() > 0.5 ? '50%' : '0';
-            
+
             this.createElement({
                 effect: 'confetti',
                 cssText: `
@@ -322,20 +328,19 @@ const EffectsManager = {
                 lifetime: duration * 1000
             });
         };
-        
         this.effectIntervals.confetti = setInterval(createConfetti, 60);
     },
 
     startMatrix() {
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
-        
+
         const createColumn = () => {
             if (!this.activeEffects.has('matrix')) return;
-            
+
             const x = Math.random() * 100;
             const speed = Math.random() * 3 + 2;
             const fontSize = Math.random() * 6 + 16;
-            
+
             const column = document.createElement('div');
             column.style.cssText = `
                 position: absolute;
@@ -343,7 +348,7 @@ const EffectsManager = {
                 top: -100px;
                 animation: matrixFall ${speed}s linear forwards;
             `;
-            
+
             const charCount = Math.floor(Math.random() * 15) + 10;
             for (let i = 0; i < charCount; i++) {
                 const charEl = document.createElement('div');
@@ -360,29 +365,28 @@ const EffectsManager = {
                 charEl.textContent = char;
                 column.appendChild(charEl);
             }
-            
+
             this.container.appendChild(column);
             this.effectElements.matrix.push(column);
-            
+
             setTimeout(() => {
                 column.remove();
                 const idx = this.effectElements.matrix.indexOf(column);
                 if (idx > -1) this.effectElements.matrix.splice(idx, 1);
             }, speed * 1000);
         };
-        
         this.effectIntervals.matrix = setInterval(createColumn, 200);
     },
 
     startHearts() {
         const createHeart = () => {
             if (!this.activeEffects.has('hearts')) return;
-            
+
             const size = Math.random() * 25 + 18;
             const duration = Math.random() * 4 + 3;
             const startX = Math.random() * 100;
             const hue = Math.random() * 30;
-            
+
             this.createElement({
                 effect: 'hearts',
                 cssText: `
@@ -398,21 +402,20 @@ const EffectsManager = {
                 lifetime: duration * 1000
             }, '❤️');
         };
-        
         this.effectIntervals.hearts = setInterval(createHeart, 250);
     },
 
     startWave() {
         const waveContainer = document.createElement('div');
         waveContainer.className = 'wave-container';
-        
+
         const waveColors = [
             { color: 'rgba(0, 119, 190, 0.7)', duration: 7 },
             { color: 'rgba(0, 166, 231, 0.5)', duration: 9 },
             { color: 'rgba(147, 51, 234, 0.4)', duration: 11 },
             { color: 'rgba(236, 72, 153, 0.3)', duration: 13 }
         ];
-        
+
         waveColors.forEach((waveData, index) => {
             const wave = document.createElement('div');
             wave.className = `wave wave${index + 1}`;
@@ -424,16 +427,8 @@ const EffectsManager = {
             wave.style.animationDuration = `${waveData.duration}s`;
             waveContainer.appendChild(wave);
         });
-        
+
         this.container.appendChild(waveContainer);
         this.effectElements.wave = [waveContainer];
-    },
-
-    isEffectEnabled(effectName) {
-        return this.activeEffects.has(effectName);
-    },
-
-    getAllEffects() {
-        return this.effects;
     }
 };

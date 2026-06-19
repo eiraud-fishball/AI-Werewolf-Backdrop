@@ -1,8 +1,9 @@
 /* ========================================
-   主题切换器 - 管理界面风格切换
+   ThemeService - 主题管理服务
+   界面风格切换 / 持久化
    ======================================== */
 
-const ThemeSwitcher = {
+const ThemeService = {
     currentStyle: 'minimal',
     styles: ['minimal', 'game', 'tech', 'classic', 'neon', 'gothic', 'forest', 'ocean', 'cosmic', 'pixel'],
     styleNames: {
@@ -19,11 +20,7 @@ const ThemeSwitcher = {
     },
 
     init() {
-        this.loadStyle();
-    },
-
-    loadStyle() {
-        const config = ConfigManager.getConfig();
+        const config = ConfigStore.getConfig();
         const savedStyle = config?.currentStyle || localStorage.getItem('gameStyle') || 'minimal';
         if (savedStyle && this.styles.includes(savedStyle)) {
             this.currentStyle = savedStyle;
